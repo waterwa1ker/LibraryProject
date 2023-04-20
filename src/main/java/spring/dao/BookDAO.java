@@ -24,7 +24,7 @@ public class BookDAO {
     }
 
     public Book show(int id){
-        return jdbcTemplate.query("SELECT * FROM book" +
+        return jdbcTemplate.query("SELECT * FROM book " +
                 "WHERE id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Book.class))
                 .stream().findAny().orElse(null);
     }
@@ -35,7 +35,7 @@ public class BookDAO {
     }
 
     public void update(int id, Book updatedBook){
-        jdbcTemplate.update("UPDATE book SET name = ? author = ? year = ? " +
+        jdbcTemplate.update("UPDATE book SET name = ?, author = ?, year = ? " +
                 "WHERE id = ?", updatedBook.getName(), updatedBook.getAuthor(),
                 updatedBook.getYear(), id);
     }
