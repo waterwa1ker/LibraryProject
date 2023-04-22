@@ -27,10 +27,11 @@ public class PersonController {
         return "people/index";
     }
 
-    @GetMapping("${id}")
+    @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model){
-        //realize!!!
-        return null;
+        model.addAttribute("person", personDAO.show(id));
+        model.addAttribute("books", personDAO.showBooks(id));
+        return "people/show";
     }
 
     @GetMapping("/new")
@@ -61,6 +62,12 @@ public class PersonController {
         if (bindingResult.hasErrors())
             return "people/edit";
         personDAO.update(id, person);
+        return "redirect:/people";
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id){
+        personDAO.delete(id);
         return "redirect:/people";
     }
 

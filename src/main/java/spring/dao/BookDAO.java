@@ -29,6 +29,11 @@ public class BookDAO {
                 .stream().findAny().orElse(null);
     }
 
+    public Person showPerson(int id){
+        return jdbcTemplate.query("SELECT person.id, person.name, person.year FROM book JOIN person ON person.id = book.user_id WHERE book.id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Person.class))
+                .stream().findAny().orElse(null);
+    }
+
     public void save(Book book){
         jdbcTemplate.update("INSERT INTO book (name, author, year) VALUES (?, ?, ?)",
                 book.getName(), book.getAuthor(), book.getYear());
@@ -43,5 +48,13 @@ public class BookDAO {
     public void delete(int id){
         jdbcTemplate.update("DELETE FROM book " +
                 "WHERE id = ?", id);
+    }
+
+    public void updateBook(int id) {
+        jdbcTemplate.update("UPDATE book SET user_id = null WHERE book.id = ?", id);
+    }
+
+    public void setBook(int book_id, int person_id) {
+        jdbcTemplate.update("UPDATE book SET user_id = ? WHERE book.id = ?", person_id, book_id);
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import spring.models.Book;
 import spring.models.Person;
 
 import java.util.List;
@@ -20,6 +21,10 @@ public class PersonDAO {
 
     public List<Person> index(){
         return jdbcTemplate.query("SELECT * FROM person", new BeanPropertyRowMapper<>(Person.class));
+    }
+
+    public List<Book> showBooks(int id){
+        return jdbcTemplate.query("SELECT book.name FROM PERSON JOIN book ON person.id = book.user_id WHERE person.id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Book.class));
     }
 
     public Person show(int id){
